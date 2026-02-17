@@ -1,0 +1,522 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="ko"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;우주 런! - 복불복 레이스&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&amp;family=Do+Hyeon&amp;display=swap" rel="stylesheet"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>:root {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>--fluorescent-orange: #ff5f00; /* 밝은 형광 주황 */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>--neon-glow: #ffcc00;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Do Hyeon', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #1a0b05;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>user-select: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>-webkit-user-select: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>touch-action: manipulation;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* 배경 레이어 및 테마 */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.bg-layer { position: fixed; inset: 0; z-index: -2; transition: all 0.5s ease; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.theme-sunset .bg-layer { background: linear-gradient(to bottom, #e63946 0%, #ff8c00 40%, #f1faee 100%); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.theme-sea .bg-layer { background: linear-gradient(to bottom, #0ea5e9 0%, #38bdf8 50%, #bae6fd 100%); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.theme-desert .bg-layer { background: linear-gradient(to bottom, #f59e0b 0%, #fbbf24 40%, #fef3c7 100%); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* 캐릭터 그리드 셀 (모바일 최적화) */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.char-cell { transition: all 0.2s ease; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; overflow: hidden; position: relative; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* 평준화 상태: 형광 주황 배경 */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.char-cell.balanced { background-color: var(--fluorescent-orange) !important; border-color: #ffffff; box-shadow: 0 0 12px var(--neon-glow); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.char-cell.balanced .char-name { background-color: rgba(0, 0, 0, 0.4); color: #fff; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.char-img-wrap { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.char-img-wrap img { max-width: 85%; max-height: 85%; object-fit: contain; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.select-badge {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 22px; height: 22px; border: 2px solid #ef4444; border-radius: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: flex; align-items: center; justify-content: center; color: #ef4444;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(255, 255, 255, 0.9); font-weight: bold; font-size: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>z-index: 10;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes popIn { from { transform: scale(0); } to { transform: scale(1); } }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* 다리 애니메이션 */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.leg { width: 3px; height: 8px; background-color: #f3f4f6; border-radius: 1px; position: absolute; bottom: -5px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.leg-left { left: 25%; animation: run-leg 0.2s infinite alternate ease-in-out; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.leg-right { right: 25%; animation: run-leg 0.2s infinite alternate-reverse ease-in-out; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes run-leg { from { transform: translateY(0) rotate(-20deg); height: 6px; } to { transform: translateY(-2px) rotate(20deg); height: 10px; } }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* 서핑 보드 (바다 맵용) */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.surfboard { width: 36px; height: 6px; background: linear-gradient(to right, #ffffff, #cbd5e1); border-radius: 50% 50% 50% 50% / 100% 100% 0% 0%; position: absolute; bottom: -3px; display: none; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.theme-sea .surfboard { display: block; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.theme-sea .leg { display: none; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* 핸디캡: 블랙홀 연출 (사막, 노을) */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes black-hole {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>0% { transform: scale(1) rotate(0deg); opacity: 1; }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>50% { transform: scale(0.1) rotate(720deg); opacity: 0.3; filter: grayscale(1); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>100% { transform: scale(1) rotate(1440deg); opacity: 1; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.is-blackhole { animation: black-hole 1s ease-in-out forwards; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* 핸디캡: 파도 밀림 (바다) */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes wave-push {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>0% { transform: translateX(0); filter: drop-shadow(0 0 0px #38bdf8); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>50% { transform: translateX(-40px); filter: drop-shadow(-15px 0 10px #38bdf8); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>100% { transform: translateX(0); filter: drop-shadow(0 0 0px #38bdf8); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.is-wave { animation: wave-push 1s ease-in-out; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* 핸디캡: UFO 및 빙결 */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.ufo-beam { background: linear-gradient(to bottom, rgba(255, 255, 0, 0.6), transparent); clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%); animation: pulseBeam 0.15s infinite alternate; pointer-events: none; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes pulseBeam { from { opacity: 0.3; } to { opacity: 0.8; } }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.ice-block { position: absolute; inset: -4px; background: rgba(186, 230, 253, 0.7); border: 1.5px solid #ffffff; border-radius: 4px; display: none; z-index: 50; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.is-frozen .ice-block { display: block; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.runner-avatar { transition: transform 0.1s linear; will-change: transform; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.no-scrollbar::-webkit-scrollbar { display: none; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.modal-backdrop { backdrop-filter: blur(8px); background-color: rgba(0, 0, 0, 0.8); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.map-card { border: 2px solid transparent; transition: all 0.3s; cursor: pointer; filter: grayscale(0.5); border-radius: 10px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.map-card.active { border-color: #fbbf24; filter: grayscale(0); transform: scale(1.05); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.lane { background: rgba(0, 0, 0, 0.2); border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.theme-sunset .lane { background: rgba(139, 69, 19, 0.4); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.theme-sea .lane { background: rgba(2, 132, 199, 0.4); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.theme-desert .lane { background: rgba(180, 83, 9, 0.4); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.vertical-text { writing-mode: vertical-rl; text-orientation: upright; letter-spacing: 0.05em; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body class="h-screen w-screen overflow-hidden theme-sunset"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="bg-layer"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="app" class="relative z-10 h-full flex flex-col"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- SCREEN: 캐릭터 선택 화면 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="screen-select" class="flex-1 flex flex-col sm:flex-row items-center justify-center p-3 gap-3 overflow-y-auto"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- 왼쪽: 맵 선택 및 평준화 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="flex flex-row sm:flex-col gap-2 w-full sm:w-32 bg-white/90 p-2 rounded-2xl shadow-xl border border-white/40 overflow-x-auto no-scrollbar"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="hidden sm:block text-center border-b border-slate-200 pb-1 mb-1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="font-bold text-[10px] text-slate-700 uppercase tracking-tighter"&gt;Maps&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="map-card active rounded-lg overflow-hidden h-10 sm:h-16 w-20 sm:w-full relative shrink-0" onclick="app.setMap('sunset', this)"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="absolute inset-0 bg-red-600 opacity-60"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white uppercase"&gt;Sunset&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="map-card rounded-lg overflow-hidden h-10 sm:h-16 w-20 sm:w-full relative shrink-0" onclick="app.setMap('sea', this)"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="absolute inset-0 bg-blue-600 opacity-60"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white uppercase"&gt;Sea&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="map-card rounded-lg overflow-hidden h-10 sm:h-16 w-20 sm:w-full relative shrink-0" onclick="app.setMap('desert', this)"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="absolute inset-0 bg-amber-600 opacity-60"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white uppercase"&gt;Desert&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="flex items-center gap-1 sm:mt-2 ml-auto sm:ml-0 bg-indigo-100 p-1.5 rounded-xl border border-indigo-200"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="checkbox" id="balance-check" class="w-4 h-4 accent-indigo-600" onchange="app.renderGrid()"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;label for="balance-check" class="text-[10px] font-bold text-indigo-900"&gt;평준화&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- 중앙: 캐릭터 그리드 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="w-full sm:max-w-md flex-1 flex flex-col min-h-[320px]"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white/20 backdrop-blur-md border border-white/30 rounded-t-2xl p-2 flex justify-between items-center px-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h1 class="text-lg text-white font-black tracking-tight"&gt;🚀 캐릭터 선택&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="text-[9px] bg-black/30 px-2 py-0.5 rounded-full opacity-80 uppercase font-bold tracking-widest"&gt;16 Slots&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="char-grid" class="bg-black/40 p-1 grid grid-cols-4 grid-rows-4 gap-1 flex-1 border-x border-b border-white/30 rounded-b-2xl overflow-y-auto no-scrollbar"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- 오른쪽: 시작 및 초기화 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="w-full sm:w-24 flex flex-row sm:flex-col gap-2 items-center justify-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div onclick="app.startGame()" class="cursor-pointer bg-gradient-to-br from-orange-400 to-red-600 text-white rounded-xl shadow-lg flex-1 sm:w-full py-4 sm:py-12 flex flex-col items-center justify-center border-2 border-white/50 active:scale-95 transition-transform"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="sm:vertical-text text-base sm:text-2xl font-black tracking-widest uppercase"&gt;START RACE&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white text-orange-600 px-4 py-4 rounded-2xl shadow-lg font-black text-sm border-2 border-orange-500 text-center shrink-0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span id="player-count" class="text-xl"&gt;0&lt;/span&gt;명</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="app.resetSelection()" class="py-4 px-4 bg-slate-700 text-slate-300 rounded-2xl text-[10px] shadow-lg border border-white/10 shrink-0 uppercase font-bold tracking-widest"&gt;Clear&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- SCREEN: 레이스 화면 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="screen-race" class="hidden flex-1 flex flex-col relative h-full"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="h-12 sm:h-16 bg-slate-900/95 backdrop-blur-md flex items-center justify-between px-3 border-b border-white/10 z-20"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="flex items-center gap-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button onclick="app.backToSelect()" class="bg-slate-700 text-white px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider"&gt;Quit&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="text-yellow-400 font-bold text-[11px]" id="race-status"&gt;RACING...&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button id="btn-show-results" onclick="app.showResults()" class="hidden bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-full text-[10px] font-bold shadow-lg"&gt;📊 순위 확인&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button id="btn-restart-top" onclick="app.resetToLobby()" class="hidden bg-white text-slate-900 px-3 py-1 rounded-full text-[10px] font-bold shadow-lg"&gt;🔄 다시 하기&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="event-toast" class="hidden bg-white text-black px-3 py-0.5 rounded-full text-[9px] font-bold shadow-lg truncate max-w-[120px]"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="flex items-center gap-1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button onclick="app.togglePause()" class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center shadow-lg" id="btn-pause"&gt;⏸&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button onclick="app.toggleSpeed()" class="w-10 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-[10px] font-bold" id="btn-speed"&gt;1x&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="flex-1 relative overflow-hidden flex flex-col items-center justify-center p-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="track-container" class="w-full h-full max-w-4xl overflow-y-auto no-scrollbar flex flex-col relative bg-black/40 rounded-2xl border border-white/10 shadow-2xl"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;!-- 레인이 동적으로 생성됩니다 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- 결과 모달 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="modal-result" class="hidden fixed inset-0 z-[100] modal-backdrop flex items-center justify-center p-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="bg-slate-900 w-full max-w-sm rounded-3xl border-4 border-yellow-400 shadow-2xl flex flex-col max-h-[85vh]"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-yellow-400 text-slate-900 p-3 text-center font-black text-lg uppercase tracking-widest"&gt;🏆 레이스 최종 순위 🏆&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="result-list" class="p-3 overflow-y-auto flex-1 space-y-1.5 no-scrollbar bg-slate-800/50"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="p-4 bg-slate-900 rounded-b-2xl border-t border-slate-700 flex gap-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button onclick="app.closeResults()" class="flex-1 bg-slate-700 text-white py-3 rounded-xl font-bold text-xs"&gt;확인&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button onclick="app.resetToLobby()" class="flex-1 bg-white text-orange-600 py-3 rounded-xl font-bold text-xs shadow-lg uppercase"&gt;Restart&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/**</p>
+<p class="p1"><span class="Apple-converted-space">         </span>* 보장 캐릭터 2종 (새침떼기 불곰, 심술 냥이)</p>
+<p class="p1"><span class="Apple-converted-space">         </span>*/</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const GUARANTEED_CHARS = [</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 101, name: "새침떼기 불곰", icon: "🐻", imgUrl: "", speed: 1.3, bg: "bg-amber-800" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 102, name: "심술 냥이", icon: "🐱", imgUrl: "", speed: 1.2, bg: "bg-orange-300" }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/**</p>
+<p class="p1"><span class="Apple-converted-space">         </span>* 나머지 캐릭터 풀 (14개 랜덤 선정)</p>
+<p class="p1"><span class="Apple-converted-space">         </span>*/</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const OTHER_CHAR_DATA_POOL = [</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 1, name: "카페인 다람쥐", icon: "☕️", imgUrl: "", speed: 1.6, bg: "bg-red-500" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 2, name: "복싱 캥거루", icon: "🥊", imgUrl: "", speed: 1.4, bg: "bg-orange-500" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 3, name: "침 뱉는 알파카", icon: "🦙", imgUrl: "", speed: 1.3, bg: "bg-orange-500" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 4, name: "만두 먹는 판다", icon: "🥟", imgUrl: "", speed: 1.25, bg: "bg-yellow-500" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 5, name: "뒤뚱뒤뚱 펭귄", icon: "🐧", imgUrl: "", speed: 1.35, bg: "bg-blue-500" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 6, name: "육지 상어", icon: "🦈", imgUrl: "", speed: 1.45, bg: "bg-slate-600" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 7, name: "목 긴 기린", icon: "🦒", imgUrl: "", speed: 1.3, bg: "bg-yellow-600" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 8, name: "식빵 고양이", icon: "🐈", imgUrl: "", speed: 1.2, bg: "bg-orange-400" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 9, name: "날고 싶은 닭", icon: "🐔", imgUrl: "", speed: 1.15, bg: "bg-red-300" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 10, name: "초고속 나무늘보", icon: "🦥", imgUrl: "", speed: 1.55, bg: "bg-green-600" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 11, name: "소심한 유령", icon: "👻", imgUrl: "", speed: 1.1, bg: "bg-indigo-300" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 12, name: "가시 선인장", icon: "🌵", imgUrl: "", speed: 1.05, bg: "bg-green-800" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 13, name: "배달 피자", icon: "🍕", imgUrl: "", speed: 1.25, bg: "bg-red-600" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 14, name: "배터리 좀비", icon: "🔋", imgUrl: "", speed: 1.1, bg: "bg-blue-900" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 15, name: "꼬마 드래곤", icon: "🐉", imgUrl: "", speed: 1.5, bg: "bg-red-700" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 16, name: "솜 터진 곰", icon: "🧸", imgUrl: "", speed: 1.0, bg: "bg-yellow-800" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 17, name: "근육질 벽돌", icon: "🧱", imgUrl: "", speed: 1.4, bg: "bg-orange-900" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 18, name: "비구름 뭉게", icon: "☁️", imgUrl: "", speed: 1.15, bg: "bg-blue-200" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 19, name: "실수 마법사", icon: "🧙‍♂️", imgUrl: "", speed: 1.2, bg: "bg-purple-600" },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 20, name: "프라이팬 달걀", icon: "🍳", imgUrl: "", speed: 1.1, bg: "bg-yellow-400" }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const SHARED_HANDICAPS = [</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 'ufo', icon: '🛸', text: 'UFO 납치!', duration: 110, beam: true },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 'ice', icon: '❄️', text: '꽁꽁 얼음!', duration: 60, class: 'is-frozen' }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const app = {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>state: {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>activePool: [],</p>
+<p class="p1"><span class="Apple-converted-space">                </span>selectedPlayers: [],</p>
+<p class="p1"><span class="Apple-converted-space">                </span>isRacing: false,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>isPaused: false,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>speedMultiplier: 1,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>winners: [],</p>
+<p class="p1"><span class="Apple-converted-space">                </span>currentMap: 'sunset',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>luckyIdx: -1</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>dom: {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>grid: document.getElementById('char-grid'),</p>
+<p class="p1"><span class="Apple-converted-space">                </span>count: document.getElementById('player-count'),</p>
+<p class="p1"><span class="Apple-converted-space">                </span>screens: { select: document.getElementById('screen-select'), race: document.getElementById('screen-race') },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>track: document.getElementById('track-container'),</p>
+<p class="p1"><span class="Apple-converted-space">                </span>modal: document.getElementById('modal-result'),</p>
+<p class="p1"><span class="Apple-converted-space">                </span>resultList: document.getElementById('result-list'),</p>
+<p class="p1"><span class="Apple-converted-space">                </span>raceStatus: document.getElementById('race-status'),</p>
+<p class="p1"><span class="Apple-converted-space">                </span>btnShowResults: document.getElementById('btn-show-results'),</p>
+<p class="p1"><span class="Apple-converted-space">                </span>btnRestartTop: document.getElementById('btn-restart-top')</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>init: function() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.shufflePool();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.renderGrid();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>shufflePool: function() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const shuffledOthers = [...OTHER_CHAR_DATA_POOL].sort(() =&gt; Math.random() - 0.5);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// 보장 캐릭터 2종 + 랜덤 14종</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.state.activePool = [...GUARANTEED_CHARS, ...shuffledOthers.slice(0, 14)].sort(() =&gt; Math.random() - 0.5);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>setMap: function(mapType, el) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.state.currentMap = mapType;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.body.className = `h-screen w-screen overflow-hidden theme-${mapType}`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.querySelectorAll('.map-card').forEach(card =&gt; card.classList.remove('active'));</p>
+<p class="p1"><span class="Apple-converted-space">                </span>el.classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>getCharDisplay: function(char) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (char.imgUrl) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return `&lt;div class="char-img-wrap"&gt;&lt;img src="${char.imgUrl}" alt="${char.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"&gt;&lt;span style="display:none;"&gt;${char.icon}&lt;/span&gt;&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return `&lt;div class="text-2xl sm:text-3xl filter drop-shadow-md char-emoji"&gt;${char.icon}&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>renderGrid: function() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.dom.grid.innerHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const isBalanced = document.getElementById('balance-check').checked;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.state.activePool.forEach((char, idx) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const cell = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>cell.className = `char-cell relative flex flex-col items-center justify-center p-1 shadow-sm aspect-square ${isBalanced ? 'balanced' : char.bg}`;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const selectedIdx = this.state.selectedPlayers.findIndex(p =&gt; p.poolIdx === idx);</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>cell.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="char-name w-full text-center text-[7px] font-bold text-white truncate px-1 bg-black/30 rounded-sm mb-0.5 tracking-tighter"&gt;${char.name}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>${this.getCharDisplay(char)}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="absolute inset-0 bg-black/50 flex items-center justify-center transition-opacity duration-200 ${selectedIdx &gt; -1 ? 'opacity-100' : 'opacity-0'}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>${selectedIdx &gt; -1 ? `&lt;div class="select-badge"&gt;${selectedIdx + 1}&lt;/div&gt;` : ''}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>cell.onclick = () =&gt; this.toggleSelection(idx);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>this.dom.grid.appendChild(cell);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>toggleSelection: function(idx) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const existingIdx = this.state.selectedPlayers.findIndex(p =&gt; p.poolIdx === idx);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (existingIdx &gt; -1) this.state.selectedPlayers.splice(existingIdx, 1);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>else {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (this.state.selectedPlayers.length &gt;= 16) return;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>this.state.selectedPlayers.push({ poolIdx: idx, data: this.state.activePool[idx], pos: 0, finished: false, stun: 0, stunCount: 0 });</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.dom.count.innerText = this.state.selectedPlayers.length;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.renderGrid();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>resetSelection: function() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.state.selectedPlayers = [];</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.dom.count.innerText = "0";</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.renderGrid();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>startGame: function() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (this.state.selectedPlayers.length &lt; 2) { alert("2명 이상의 캐릭터를 선택해주세요!"); return; }</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const isBalanced = document.getElementById('balance-check').checked;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.state.luckyIdx = Math.floor(Math.random() * this.state.selectedPlayers.length);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.state.selectedPlayers.forEach((p, i) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>p.currentSpeed = isBalanced ? 1.0 : p.data.speed;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>p.pos = 0; p.finished = false; p.stun = 0; p.stunCount = 0;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>p.isLucky = (i === this.state.luckyIdx);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.dom.btnShowResults.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.dom.btnRestartTop.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.dom.raceStatus.innerText = "RACING...";</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.dom.screens.select.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.dom.screens.race.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.renderTrack();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.state.isRacing = true;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.state.winners = [];</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.state.speedMultiplier = 1;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>requestAnimationFrame(() =&gt; this.gameLoop());</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>renderTrack: function() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.dom.track.innerHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.state.selectedPlayers.forEach((p, i) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const lane = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>lane.className = 'lane flex-shrink-0 h-11 sm:h-12 w-full relative border-b border-white/5';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>lane.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="absolute left-1 top-1/2 -translate-y-1/2 text-white/10 font-black text-xs z-0"&gt;${i + 1}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div id="runner-${i}" class="runner-avatar absolute left-0 top-1/2 -translate-y-1/2 z-10 flex flex-col items-center justify-center w-10" style="transform: translate(0px, -50%)"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="relative flex flex-col items-center char-body-container"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div class="w-8 h-8 flex items-center justify-center relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>${p.data.imgUrl ? `&lt;img src="${p.data.imgUrl}" class="max-w-full max-h-full object-contain"&gt;` : `&lt;span class="text-xl sm:text-2xl"&gt;${p.data.icon}&lt;/span&gt;`}</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="ice-block"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div class="relative w-full h-1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="leg leg-left"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="leg leg-right"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="surfboard"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div id="ufo-${i}" class="ufo-beam absolute -top-8 left-1/2 -translate-x-1/2 w-10 h-16 hidden"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="text-[6px] bg-black/60 px-0.5 rounded text-white whitespace-nowrap mt-0.5 tracking-tighter opacity-80"&gt;${p.data.name}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div id="rank-display-${i}" class="absolute right-7 top-1/2 -translate-y-1/2 font-black text-2xl text-yellow-400 hidden z-30 drop-shadow-md italic"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="absolute right-0.5 top-1/2 -translate-y-1/2 text-lg opacity-80 z-20"&gt;🏁&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>this.dom.track.appendChild(lane);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>backToSelect: function() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.state.isRacing = false;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.dom.screens.race.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.dom.screens.select.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>togglePause: function() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.state.isPaused = !this.state.isPaused;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('btn-pause').innerText = this.state.isPaused ? "▶" : "⏸";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>toggleSpeed: function() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.state.speedMultiplier = this.state.speedMultiplier === 1 ? 2 : (this.state.speedMultiplier === 2 ? 4 : 1);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('btn-speed').innerText = `${this.state.speedMultiplier}x`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>gameLoop: function() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!this.state.isRacing) return;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!this.state.isPaused) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>let allFinished = true;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const trackWidth = this.dom.track.clientWidth - 40;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>this.state.selectedPlayers.forEach((p, i) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>if (p.finished) return;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>allFinished = false;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>const runnerEl = document.getElementById(`runner-${i}`);</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>const ufoEl = document.getElementById(`ufo-${i}`);</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>const rankEl = document.getElementById(`rank-display-${i}`);</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>const container = runnerEl.querySelector('.char-body-container');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>if (p.stun &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>p.stun--;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>if (p.stun &lt;= 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>ufoEl.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>container.classList.remove('is-frozen', 'is-blackhole', 'is-wave');</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>// 핸디캡 시스템: 럭키 1명 면제, 나머지 필수 1회</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>if (!p.isLucky &amp;&amp; p.stunCount &lt; 2) {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>let triggerChance = 0.003 * this.state.speedMultiplier;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>const progress = p.pos / trackWidth;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>if (p.stunCount === 0 &amp;&amp; progress &gt; 0.5 &amp;&amp; progress &lt; 0.85) triggerChance = 0.015;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                            </span>if (Math.random() &lt; triggerChance) {</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>let handicap;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>if (Math.random() &lt; 0.45) {</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>if (this.state.currentMap === 'sea') {</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>handicap = { id: 'wave', icon: '🌊', text: '파도 밀림!', duration: 60, class: 'is-wave', back: 35 };</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>handicap = { id: 'blackhole', icon: '🕳️', text: '블랙홀!', duration: 60, class: 'is-blackhole' };</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>handicap = SHARED_HANDICAPS[Math.floor(Math.random() * SHARED_HANDICAPS.length)];</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                                </span>p.stun = handicap.duration / this.state.speedMultiplier;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>p.stunCount++;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>this.showToast(`${p.data.icon} ${handicap.text}`);</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>if (handicap.beam) ufoEl.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>if (handicap.class) container.classList.add(handicap.class);</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>if (handicap.id === 'ufo') p.pos = Math.max(0, p.pos - 35);</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>if (handicap.back) p.pos = Math.max(0, p.pos - handicap.back);</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>let moveStep = (p.currentSpeed * 0.9) + (Math.random() * 0.4);<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>moveStep *= this.state.speedMultiplier;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>p.pos += moveStep;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>if (p.pos &gt;= trackWidth) {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>p.pos = trackWidth;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>p.finished = true;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>this.state.winners.push(p);</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>rankEl.innerText = this.state.winners.length;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>rankEl.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>runnerEl.style.opacity = "0.5";</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>runnerEl.style.transform = `translate(${p.pos}px, -50%)`;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (allFinished) { this.onRaceFinish(); return; }</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>requestAnimationFrame(() =&gt; this.gameLoop());</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>showToast: function(msg) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const t = document.getElementById('event-toast');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>t.innerHTML = msg; t.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>setTimeout(() =&gt; t.classList.add('hidden'), 1500);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>onRaceFinish: function() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.state.isRacing = false;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.dom.raceStatus.innerText = "FINISH!";</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.dom.btnShowResults.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.dom.btnRestartTop.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>showResults: function() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const list = this.dom.resultList; list.innerHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.state.winners.forEach((p, i) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const isLast = i === this.state.winners.length - 1;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const row = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>let bg = i === 0 ? "bg-yellow-400 text-slate-900 border-2 border-white/50" : (isLast ? "bg-red-600 animate-pulse text-white" : "bg-slate-700/80 text-white shadow-sm");</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>row.className = `flex items-center p-2 rounded-xl ${bg} shadow-lg transition-all duration-300`;</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const charThumb = p.data.imgUrl ? `&lt;img src="${p.data.imgUrl}" class="w-8 h-8 object-contain mx-2"&gt;` : `&lt;div class="text-2xl mx-2"&gt;${p.data.icon}&lt;/div&gt;`;</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>row.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="font-black w-8 text-center text-sm"&gt;${isLast ? '💥' : (i+1)}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>${charThumb}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="flex-1 font-bold text-[11px] truncate tracking-tight"&gt;${p.data.name}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="text-[9px] font-black mr-1 uppercase"&gt;${isLast ? '꽝' : ''}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>list.appendChild(row);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.dom.modal.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>closeResults: function() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.dom.modal.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>resetToLobby: function() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.dom.modal.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.dom.screens.race.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.dom.screens.select.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.dom.btnShowResults.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.dom.btnRestartTop.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.shufflePool();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>this.resetSelection();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>window.onload = () =&gt; app.init();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
